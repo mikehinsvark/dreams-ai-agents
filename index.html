@@ -6,7 +6,7 @@
 <title>DBR AI Agents — Setup Your AI Team</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════════════
    DBR AI AGENTS — DARK MARITIME TECH DESIGN SYSTEM
@@ -857,204 +857,107 @@ body {
 /* ── STEP 0: VIDEO INTRO ── */
 #step0 { max-width: 760px; }
 
-/* ── CANVAS VIDEO PLAYER ── */
-.vid-player {
-  background: #030a12;
-  border: 1px solid rgba(45,212,191,0.2);
-  border-radius: 14px;
-  overflow: hidden;
-  margin-bottom: 20px;
-  position: relative;
+/* ── VIDEO PLAYER (matches erctrainers.com/aiagents/ style) ── */
+.video-player-wrap {
+  position:relative; background:var(--navy-card); border:1px solid var(--navy-border);
+  border-radius:16px; overflow:hidden; margin-bottom:20px; aspect-ratio:16/9;
 }
-/* Terminal chrome bar */
-.vid-chrome {
-  background: rgba(5,13,22,0.95);
-  border-bottom: 1px solid rgba(45,212,191,0.15);
-  padding: 8px 14px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.video-player-bg { position:absolute; inset:0; background:linear-gradient(135deg,#060e1a,#0a1a2c); }
+.video-player-content { position:relative; z-index:2; width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
+/* Slides */
+.vslide { display:none; width:100%; height:100%; flex-direction:column; align-items:center; justify-content:center; padding:36px; text-align:center; }
+.vslide.active { display:flex; animation:vsIn .6s ease both; }
+@keyframes vsIn { from{opacity:0;transform:scale(.97)} to{opacity:1;transform:scale(1)} }
+.vs-num { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:3px; color:var(--dim); text-transform:uppercase; margin-bottom:14px; }
+.vs-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(26px,5vw,46px); letter-spacing:2px; color:var(--cream); margin-bottom:10px; }
+.vs-title .hb{color:var(--teal)} .vs-title .hg{color:var(--gold)} .vs-title .hgr{color:var(--green)}
+.vs-body { font-size:clamp(11px,2vw,14px); color:var(--dim); max-width:480px; line-height:1.75; font-weight:300; }
+.vs-body strong { color:var(--text); font-weight:500; }
+/* Before/After compare */
+.compare-row { display:flex; gap:14px; margin:18px 0; width:100%; }
+.compare-col { flex:1; border-radius:12px; padding:14px 16px; text-align:left; }
+.compare-col.before { background:rgba(255,64,96,.06); border:1px solid rgba(255,64,96,.2); }
+.compare-col.after { background:rgba(45,212,191,.06); border:1px solid rgba(45,212,191,.2); }
+.compare-header { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
+.compare-col.before .compare-header{color:#ff4060} .compare-col.after .compare-header{color:var(--teal)}
+.compare-item { font-size:11px; color:var(--dim); padding:4px 0 4px 14px; position:relative; line-height:1.4; }
+.compare-item::before { content:''; position:absolute; left:0; top:8px; width:4px; height:4px; border-radius:50%; }
+.compare-col.before .compare-item::before{background:#ff4060} .compare-col.after .compare-item::before{background:var(--teal)}
+/* Agent showcase */
+.vs-agents { display:flex; gap:12px; margin:18px 0; flex-wrap:wrap; justify-content:center; }
+.vs-agent { display:flex; flex-direction:column; align-items:center; gap:6px; background:rgba(255,255,255,.03); border:1px solid var(--navy-border); border-radius:12px; padding:12px 16px; animation:popIn .4s ease both; }
+.vs-agent:nth-child(1){animation-delay:.1s}.vs-agent:nth-child(2){animation-delay:.2s}.vs-agent:nth-child(3){animation-delay:.3s}.vs-agent:nth-child(4){animation-delay:.4s}
+@keyframes popIn { from{opacity:0;transform:translateY(10px) scale(.95)} to{opacity:1;transform:translateY(0) scale(1)} }
+.vsa-icon{font-size:22px} .vsa-name{font-size:11px;font-weight:600;color:var(--cream)} .vsa-role{font-size:10px;color:var(--dim);text-align:center}
+/* Big numbers */
+.big-numbers { display:flex; gap:20px; margin:18px 0; flex-wrap:wrap; justify-content:center; }
+.big-num { text-align:center; animation:numPop .5s ease both; }
+@keyframes numPop { from{opacity:0;transform:scale(.8)} to{opacity:1;transform:scale(1)} }
+.bn-val { font-family:'Bebas Neue',sans-serif; font-size:clamp(34px,6vw,52px); line-height:1; }
+.bn-lbl { font-size:10px; color:var(--dim); margin-top:4px; }
+/* Step cards row */
+.step-cards { display:flex; gap:10px; margin:16px 0; width:100%; }
+.step-card { flex:1; display:flex; flex-direction:row; align-items:center; gap:8px; background:rgba(255,255,255,.03); border:1px solid var(--navy-border); border-radius:10px; padding:10px 12px; }
+.scard-icon{font-size:18px;flex-shrink:0} .scard-name{font-size:11px;font-weight:600;color:var(--cream)} .scard-role{font-size:9px;color:var(--dim)}
+/* Video controls bar */
+.vid-ctrl-bar {
+  position:absolute; bottom:0; left:0; right:0; z-index:20;
+  background:rgba(0,0,0,.55); padding:10px 16px 12px;
 }
-.vid-chrome-dots { display:flex; gap:5px; }
-.vid-chrome-dot {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-}
-.vid-chrome-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 2px;
-  color: rgba(45,212,191,0.5);
-  flex: 1;
-  text-align: center;
-}
-.vid-chrome-live {
-  font-family: 'DM Mono', monospace;
-  font-size: 9px;
-  color: #22c55e;
-  letter-spacing: 1px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-.vid-chrome-live::before {
-  content: '';
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: #22c55e;
-  animation: blink 1.2s ease-in-out infinite;
-}
-/* Canvas stage */
-.vid-stage-wrap {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16/7;
-}
-#vidStage {
-  display: none;
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-#introCanvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-#vidPlayCanvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
+.vid-ctrl-row { display:flex; align-items:center; justify-content:space-between; }
+.vid-ctrl-left { display:flex; align-items:center; gap:10px; }
+.vplay-btn { width:26px; height:26px; border-radius:50%; background:rgba(255,255,255,.1); border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--cream); font-size:10px; transition:background .2s; }
+.vplay-btn:hover{background:rgba(255,255,255,.2)}
+.vid-time { font-family:'DM Mono',monospace; font-size:10px; color:rgba(255,255,255,.4); }
+.slide-dots { display:flex; gap:5px; }
+.sdot { width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.15); transition:all .2s; cursor:pointer; }
+.sdot.active { background:var(--teal); width:16px; border-radius:3px; }
+.vid-timeline { width:100%; height:3px; background:rgba(255,255,255,.1); border-radius:2px; cursor:pointer; margin-bottom:8px; position:relative; }
+.vid-timeline-fill { height:100%; background:var(--teal); border-radius:2px; transition:width .3s linear; position:relative; }
+.vid-timeline-dot { position:absolute; top:50%; right:0; width:9px; height:9px; border-radius:50%; background:var(--teal); transform:translate(50%,-50%); box-shadow:0 0 7px var(--teal); }
 /* Landing overlay */
-.vid-landing {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: #030a12;
-  cursor: pointer;
-  transition: opacity 0.3s;
-  z-index: 2;
+#vid-landing {
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  background:linear-gradient(135deg,#060e1a,#0a1a2c);
+  border:1px solid var(--navy-border); border-radius:16px;
+  padding:40px 32px; margin-bottom:20px;
+  cursor:pointer; transition:opacity .3s;
+  position:relative;
 }
-.vid-landing.hidden {
-  opacity: 0;
-  pointer-events: none;
-  visibility: hidden;
-}
-.vid-landing-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-.vid-play-btn {
-  width: 72px; height: 72px;
-  border-radius: 50%;
-  background: rgba(45,212,191,0.12);
-  border: 2px solid var(--teal);
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.25s;
-  box-shadow: 0 0 32px rgba(45,212,191,0.25);
-  position: relative;
-  z-index: 3;
-  margin-bottom: 16px;
-}
-.vid-play-btn:hover {
-  background: rgba(45,212,191,0.22);
-  transform: scale(1.1);
-  box-shadow: 0 0 50px rgba(45,212,191,0.4);
-}
-.vid-play-icon { color: var(--teal); font-size: 26px; margin-left: 5px; }
-.vid-landing-title {
-  font-family: 'Cinzel', serif;
-  font-size: 15px;
-  letter-spacing: 2px;
-  color: var(--cream);
-  position: relative; z-index: 3;
-  margin-bottom: 6px;
-}
-.vid-landing-sub {
-  font-family: 'DM Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 1.5px;
-  color: var(--dim);
-  position: relative; z-index: 3;
-}
-/* Caption bar */
-.vid-caption-bar {
-  background: rgba(3,10,18,0.92);
-  border-top: 1px solid rgba(45,212,191,0.1);
-  padding: 8px 16px;
-  min-height: 36px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.vid-caption-cc {
-  font-family: 'DM Mono', monospace;
-  font-size: 8px;
-  background: rgba(45,212,191,0.15);
-  border: 1px solid rgba(45,212,191,0.3);
-  color: var(--teal);
-  padding: 1px 5px;
-  border-radius: 3px;
-  flex-shrink: 0;
-}
-#vidCaption {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  color: rgba(200,216,232,0.8);
-  letter-spacing: 0.3px;
-  line-height: 1.4;
-}
-/* Controls bar */
-.vid-controls {
-  background: rgba(5,13,22,0.95);
-  border-top: 1px solid rgba(45,212,191,0.1);
-  padding: 8px 14px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.vid-progress-bar {
-  flex: 1;
-  height: 3px;
-  background: rgba(45,212,191,0.12);
-  border-radius: 3px;
-  cursor: pointer;
-}
-.vid-progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--teal), var(--gold));
-  border-radius: 3px;
-  width: 0%;
-  transition: width 0.3s linear;
-}
-.vid-ctrl-btn {
-  background: rgba(45,212,191,0.07);
-  border: 1px solid rgba(45,212,191,0.18);
-  color: var(--teal);
-  border-radius: 5px;
-  padding: 4px 10px;
-  font-size: 11px;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-family: 'DM Mono', monospace;
-  white-space: nowrap;
-}
-.vid-ctrl-btn:hover { background: rgba(45,212,191,0.14); }
-.vid-ctrl-time {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  color: var(--dim);
-  white-space: nowrap;
-}
+.vid-landing.hidden { opacity:0; pointer-events:none; visibility:hidden; }
+.vid-agents-row { display:flex; gap:20px; margin-bottom:24px; justify-content:center; }
+.vid-agent-block { display:flex; flex-direction:column; align-items:center; gap:8px; }
+.vid-agent-icon { width:52px; height:52px; border-radius:14px; border:1.5px solid; display:flex; align-items:center; justify-content:center; font-size:22px; animation:agFloat 3s ease-in-out infinite; }
+.vid-agent-block:nth-child(2) .vid-agent-icon{animation-delay:.75s}
+.vid-agent-block:nth-child(3) .vid-agent-icon{animation-delay:1.5s}
+.vid-agent-block:nth-child(4) .vid-agent-icon{animation-delay:2.25s}
+.vid-agent-label { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:1.5px; text-transform:uppercase; }
+.vid-play-btn { width:64px; height:64px; border-radius:50%; background:rgba(45,212,191,.15); border:2px solid var(--teal); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; margin-bottom:18px; box-shadow:0 0 28px rgba(45,212,191,.22); }
+.vid-play-btn:hover { background:rgba(45,212,191,.25); transform:scale(1.08); box-shadow:0 0 44px rgba(45,212,191,.38); }
+.vid-play-icon { color:var(--teal); font-size:22px; margin-left:4px; }
+.vid-tagline-block { text-align:center; }
+.vid-tagline-title { font-family:'Cinzel',serif; font-size:15px; letter-spacing:2px; color:var(--cream); margin-bottom:5px; }
+.vid-tagline-sub { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:1.5px; color:var(--dim); }
+.vid-duration { position:absolute; bottom:14px; right:16px; font-family:'DM Mono',monospace; font-size:10px; color:var(--dim); background:rgba(5,13,20,.6); padding:3px 8px; border-radius:4px; }
+/* Below video */
+.below-vid { display:flex; gap:12px; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:20px; }
+.vid-cap { font-size:13px; color:var(--dim); font-weight:300; }
+.vid-cap strong{color:var(--text)}
+.btn-to-setup { display:inline-flex; align-items:center; gap:8px; background:var(--teal); color:#000; font-family:'DM Mono',monospace; font-size:13px; font-weight:700; padding:11px 24px; border-radius:10px; border:none; cursor:pointer; white-space:nowrap; transition:all .2s; opacity:0; pointer-events:none; }
+.btn-to-setup.visible{opacity:1;pointer-events:all}
+.btn-to-setup:hover{filter:brightness(1.1);transform:translateY(-1px)}
+/* Cap cards (shown after video ends) */
+.cap-row { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:16px; }
+.cap-card { background:var(--navy-card); border:1px solid var(--navy-border); border-radius:12px; padding:14px; animation:fadeUp .4s ease both; }
+.cap-card:nth-child(1){animation-delay:.1s;border-top:2px solid var(--teal)}
+.cap-card:nth-child(2){animation-delay:.2s;border-top:2px solid var(--gold)}
+.cap-card:nth-child(3){animation-delay:.3s;border-top:2px solid var(--green)}
+.cap-card:nth-child(4){animation-delay:.4s;border-top:2px solid #a855f7}
+.cap-icon{font-size:18px;margin-bottom:7px} .cap-name{font-size:12px;font-weight:700;color:var(--cream);margin-bottom:3px} .cap-desc{font-size:10px;color:var(--dim);line-height:1.4}
+/* Quote banner */
+.quote-banner { background:linear-gradient(135deg,rgba(45,212,191,.06),rgba(201,168,76,.04)); border:1px solid rgba(45,212,191,.15); border-radius:13px; padding:20px 24px; text-align:center; margin-bottom:16px; }
+.quote-banner-text { font-family:'Bebas Neue',sans-serif; font-size:clamp(14px,2.5vw,20px); letter-spacing:1px; color:var(--cream); line-height:1.4; }
+.quote-banner-text em{color:var(--teal);font-style:normal}
 /* Stat boxes */
 .vid-stats-row {
   display: grid;
@@ -1475,51 +1378,174 @@ body {
         You're about to set up something <strong>no other agent in this industry has.</strong> Watch this 60-second explainer before you begin — it'll make everything click.
       </p>
 
-      <!-- Canvas Video Player -->
-      <div class="vid-player" id="vidPlayer">
-        <!-- Terminal chrome bar -->
-        <div class="vid-chrome">
-          <div class="vid-chrome-dots">
-            <div class="vid-chrome-dot" style="background:#ff5f57"></div>
-            <div class="vid-chrome-dot" style="background:#febc2e"></div>
-            <div class="vid-chrome-dot" style="background:#28c840"></div>
-          </div>
-          <div class="vid-chrome-label">// DBR_AGENT_BRIEFING_v2.exe</div>
-          <div class="vid-chrome-live">LIVE</div>
-        </div>
+      <!-- Video Player -->
+      <audio id="voiceAudio" src="voiceover.mp3" preload="auto"></audio>
 
-        <!-- Canvas stage wrapper -->
-        <div class="vid-stage-wrap">
-          <!-- Landing overlay (shown before play) -->
-          <div class="vid-landing" id="vidLanding" onclick="startVideo()">
-            <canvas class="vid-landing-canvas" id="introCanvas"></canvas>
-            <button class="vid-play-btn" aria-label="Play explainer video">
-              <div class="vid-play-icon">▶</div>
-            </button>
-            <div class="vid-landing-title">YOUR PERSONAL AI TEAM</div>
-            <div class="vid-landing-sub">Working 24/7 · Knows your pipeline · No tech skills needed</div>
+      <!-- Landing (shown before play) -->
+      <div id="vid-landing">
+        <div class="vid-agents-row">
+          <div class="vid-agent-block">
+            <div class="vid-agent-icon" style="background:rgba(45,212,191,0.15);border-color:rgba(45,212,191,0.4)">🤖</div>
+            <div class="vid-agent-label" style="color:var(--teal)">RECRUITING</div>
           </div>
-
-          <!-- Canvas playback stage (hidden until play) -->
-          <div id="vidStage">
-            <canvas id="vidPlayCanvas"></canvas>
+          <div class="vid-agent-block">
+            <div class="vid-agent-icon" style="background:rgba(201,168,76,0.15);border-color:rgba(201,168,76,0.4)">🎯</div>
+            <div class="vid-agent-label" style="color:var(--gold)">ONBOARDING</div>
+          </div>
+          <div class="vid-agent-block">
+            <div class="vid-agent-icon" style="background:rgba(34,197,94,0.15);border-color:rgba(34,197,94,0.4)">💼</div>
+            <div class="vid-agent-label" style="color:var(--green)">B2B SALES</div>
+          </div>
+          <div class="vid-agent-block">
+            <div class="vid-agent-icon" style="background:rgba(168,85,247,0.15);border-color:rgba(168,85,247,0.4)">🧠</div>
+            <div class="vid-agent-label" style="color:#a855f7">INTELLIGENCE</div>
           </div>
         </div>
-
-        <!-- Caption bar -->
-        <div class="vid-caption-bar" id="vidCaptionBar" style="display:none;">
-          <span class="vid-caption-cc">CC</span>
-          <span id="vidCaption"></span>
+        <button class="vid-play-btn" onclick="startVideo()" aria-label="Play explainer video">
+          <div class="vid-play-icon">▶</div>
+        </button>
+        <div class="vid-tagline-block">
+          <div class="vid-tagline-title">YOUR PERSONAL AI TEAM</div>
+          <div class="vid-tagline-sub">Working 24/7 · Knows your pipeline · No tech skills needed</div>
         </div>
-
-        <!-- Controls bar -->
-        <div class="vid-controls" id="vidControlsBar" style="display:none;">
-          <button class="vid-ctrl-btn" onclick="pauseVideo()" id="vidPauseBtn">⏸ PAUSE</button>
-          <div class="vid-progress-bar"><div class="vid-progress-fill" id="vidProgressFill"></div></div>
-          <div class="vid-ctrl-time" id="vidTime">0:00 / 1:10</div>
-          <button class="vid-ctrl-btn" onclick="skipVideo()">⏭ Skip</button>
-        </div>
+        <div class="vid-duration">1:10</div>
       </div>
+
+      <!-- Video player (hidden until play) -->
+      <div id="vid-player" style="display:none;">
+        <div class="video-player-wrap">
+          <div class="video-player-bg"></div>
+          <div class="video-player-content">
+
+            <!-- SLIDE 1: The Problem -->
+            <div class="vslide active" id="vslide1">
+              <div class="vs-num">// 01 — The Problem</div>
+              <div class="vs-title">Most Agents Have <span class="hb">Tools</span>. Nobody Uses Them.</div>
+              <div class="compare-row">
+                <div class="compare-col before">
+                  <div class="compare-header">❌ The Old Way</div>
+                  <div class="compare-item">CRM you log into once, then forget</div>
+                  <div class="compare-item">Training videos nobody watches</div>
+                  <div class="compare-item">Facebook group with slow answers</div>
+                  <div class="compare-item">Weekly Zoom carrying everything</div>
+                  <div class="compare-item">Tools that don't talk to each other</div>
+                </div>
+                <div class="compare-col after">
+                  <div class="compare-header">✓ The DBR AI Way</div>
+                  <div class="compare-item">AI that knows your pipeline cold</div>
+                  <div class="compare-item">Agents onboarded while you sleep</div>
+                  <div class="compare-item">Instant answers 24/7 — no waiting</div>
+                  <div class="compare-item">Morning briefing with your 3 priorities</div>
+                  <div class="compare-item">All tools connected, AI coordinates them</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SLIDE 2: Your Team -->
+            <div class="vslide" id="vslide2">
+              <div class="vs-num">// 02 — Your Team</div>
+              <div class="vs-title">Four <span class="hg">Agents</span>. One Mission: Your Growth.</div>
+              <div class="vs-agents">
+                <div class="vs-agent">
+                  <div class="vsa-icon">🤖</div>
+                  <div class="vsa-name" style="color:var(--teal)">Recruiting</div>
+                  <div class="vsa-role">Finds, qualifies<br>&amp; follows up</div>
+                </div>
+                <div class="vs-agent">
+                  <div class="vsa-icon">🎯</div>
+                  <div class="vsa-name" style="color:var(--gold)">Onboarding</div>
+                  <div class="vsa-role">Guides your new<br>agents day 1–30</div>
+                </div>
+                <div class="vs-agent">
+                  <div class="vsa-icon">💼</div>
+                  <div class="vsa-name" style="color:var(--green)">B2B Sales</div>
+                  <div class="vsa-role">Preps meetings,<br>runs calculations</div>
+                </div>
+                <div class="vs-agent">
+                  <div class="vsa-icon">🧠</div>
+                  <div class="vsa-name" style="color:#a855f7">Intelligence</div>
+                  <div class="vsa-role">Daily briefings,<br>priority engine</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SLIDE 3: The Intelligence -->
+            <div class="vslide" id="vslide3">
+              <div class="vs-num">// 03 — The Intelligence</div>
+              <div class="vs-title">This Isn't A <span class="hb">Generic Chatbot.</span></div>
+              <div class="vs-body" style="margin-bottom:16px">It knows your pipeline. It knows your production numbers. It knows which of your new agents needs attention right now. Every morning. Automatically.</div>
+              <div class="big-numbers">
+                <div class="big-num"><div class="bn-val" style="color:var(--teal)">7AM</div><div class="bn-lbl">Daily briefing<br>delivered to you</div></div>
+                <div class="big-num"><div class="bn-val" style="color:var(--gold)">3</div><div class="bn-lbl">Top priorities<br>every single day</div></div>
+                <div class="big-num"><div class="bn-val" style="color:var(--green)">24/7</div><div class="bn-lbl">Onboarding support<br>for your agents</div></div>
+                <div class="big-num"><div class="bn-val" style="color:#a855f7">∞</div><div class="bn-lbl">Smarter as your<br>org grows</div></div>
+              </div>
+            </div>
+
+            <!-- SLIDE 4: The Setup -->
+            <div class="vslide" id="vslide4">
+              <div class="vs-num">// 04 — The Setup</div>
+              <div class="vs-title">3 Minutes.<br><span class="hb">Zero Tech Skills.</span></div>
+              <div class="vs-body" style="margin-bottom:16px">Tell us your name, select your Dreams Cloud package, and flip a few switches. Everything is already connected behind the scenes. No passwords. No API keys. No headaches.</div>
+              <div class="step-cards">
+                <div class="step-card"><div class="scard-icon">👤</div><div><div class="scard-name">Steps 1–2</div><div class="scard-role">Profile + package</div></div></div>
+                <div class="step-card"><div class="scard-icon">🎯</div><div><div class="scard-name">Steps 3–4</div><div class="scard-role">Goals + tool toggles</div></div></div>
+                <div class="step-card"><div class="scard-icon">⚡</div><div><div class="scard-name" style="color:var(--green)">Step 5</div><div class="scard-role">Launch — you're live</div></div></div>
+              </div>
+            </div>
+
+            <!-- SLIDE 5: The Difference -->
+            <div class="vslide" id="vslide5">
+              <div class="vs-num">// 05 — The Difference</div>
+              <div class="vs-title" style="font-size:clamp(18px,3.5vw,34px);margin-bottom:16px">&ldquo;While everyone else is handing their agents a toolbox, we&rsquo;re handing them a <span class="hb">fully autonomous AI team.</span>&rdquo;</div>
+              <div class="vs-body" style="margin-bottom:20px">Nobody in insurance benefits, Section 125, or agent recruiting has built anything like this. You&rsquo;re not just joining DBR — you&rsquo;re getting an unfair advantage.</div>
+              <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.2);padding:9px 18px;border-radius:8px;">
+                <span style="color:var(--teal)">&#9679;</span>
+                <span style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--teal)">YOUR TEAM IS READY TO ACTIVATE</span>
+              </div>
+            </div>
+
+          </div><!-- /video-player-content -->
+
+          <!-- Controls -->
+          <div class="vid-ctrl-bar">
+            <div class="vid-timeline" onclick="scrubVid(event,this)">
+              <div class="vid-timeline-fill" id="vtFill"><div class="vid-timeline-dot"></div></div>
+            </div>
+            <div class="vid-ctrl-row">
+              <div class="vid-ctrl-left">
+                <button class="vplay-btn" id="vPlayBtn" onclick="toggleVid()">⏸</button>
+                <div class="vid-time" id="vTime">0:00 / 1:10</div>
+              </div>
+              <div class="slide-dots" id="vSlideDots">
+                <div class="sdot active" onclick="goVSlide(0)"></div>
+                <div class="sdot" onclick="goVSlide(1)"></div>
+                <div class="sdot" onclick="goVSlide(2)"></div>
+                <div class="sdot" onclick="goVSlide(3)"></div>
+                <div class="sdot" onclick="goVSlide(4)"></div>
+              </div>
+            </div>
+          </div>
+        </div><!-- /video-player-wrap -->
+
+        <div class="below-vid">
+          <div class="vid-cap" id="vCaption"><strong>The Problem</strong> — Why tools alone don't work</div>
+          <button class="btn-to-setup" id="btnToSetup" onclick="goTo(1)">Start My Setup →</button>
+        </div>
+
+        <!-- Cap cards (revealed after video ends) -->
+        <div class="cap-row" id="capRow" style="display:none">
+          <div class="cap-card"><div class="cap-icon">🤖</div><div class="cap-name" style="color:var(--teal)">Recruiting</div><div class="cap-desc">Pipeline builder · LinkedIn outreach · Objection scripts</div></div>
+          <div class="cap-card"><div class="cap-icon">🎯</div><div class="cap-name" style="color:var(--gold)">Onboarding</div><div class="cap-desc">Day 1–30 guide · 24/7 Q&amp;A · Checklist automation</div></div>
+          <div class="cap-card"><div class="cap-icon">💼</div><div class="cap-name" style="color:var(--green)">B2B Sales</div><div class="cap-desc">Employer prep · FICA calculator · Proposal writer</div></div>
+          <div class="cap-card"><div class="cap-icon">🧠</div><div class="cap-name" style="color:#a855f7">Intelligence</div><div class="cap-desc">Daily briefings · Residual tracker · Priority engine</div></div>
+        </div>
+
+        <!-- Quote banner -->
+        <div class="quote-banner" id="quoteBanner" style="display:none">
+          <div class="quote-banner-text">&ldquo;While everyone else is handing their agents a toolbox, we&rsquo;re handing them a <em>fully autonomous AI team.</em>&rdquo;</div>
+        </div>
+      </div><!-- /vid-player -->
 
       <!-- Stat boxes -->
       <div class="vid-stats-row">
@@ -2293,9 +2319,113 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.1 });
 
-// ── VIDEO ENGINE: loaded from canvas_video.js ──
-</script>
-<script src="canvas_video.js"></script>
+// ── VIDEO ENGINE (matches erctrainers.com/aiagents/) ──
+let vidPlaying = false;
+let vidTotal = 70;
+let vidSecs = 0;
+let vidTimer = null;
+let vidSlide = 0;
+const slideStarts = [0, 14, 26, 39, 51];
+const captions = [
+  '<strong>The Problem</strong> — Why tools alone don\'t work',
+  '<strong>Your AI Team</strong> — Four agents built for your business',
+  '<strong>The Intelligence</strong> — Connected to your live pipeline',
+  '⚡ <strong>The Setup</strong> — 3 minutes, zero tech skills',
+  '<strong>The Advantage</strong> — Nobody in your space has this'
+];
+
+function startVideo() {
+  document.getElementById('vid-landing').style.display = 'none';
+  document.getElementById('vid-player').style.display = 'block';
+  setTimeout(() => {
+    vidPlaying = true;
+    vidTimer = setInterval(vidTick, 500);
+    const audio = document.getElementById('voiceAudio');
+    if (audio) { audio.currentTime = 0; audio.play().catch(()=>{}); }
+  }, 200);
+}
+
+function toggleVid() {
+  vidPlaying ? pauseVid() : playVid();
+}
+
+function playVid() {
+  vidPlaying = true;
+  document.getElementById('vPlayBtn').textContent = '⏸';
+  vidTimer = setInterval(vidTick, 500);
+  const audio = document.getElementById('voiceAudio');
+  if (audio) audio.play().catch(()=>{});
+}
+
+function pauseVid() {
+  vidPlaying = false;
+  document.getElementById('vPlayBtn').textContent = '▶';
+  clearInterval(vidTimer);
+  const audio = document.getElementById('voiceAudio');
+  if (audio) audio.pause();
+}
+
+function vidTick() {
+  // Sync to actual audio time when available
+  const audio = document.getElementById('voiceAudio');
+  if (audio && !audio.paused && audio.duration) {
+    vidSecs = audio.currentTime;
+  } else {
+    vidSecs += 0.5;
+  }
+  if (vidSecs >= vidTotal) { vidSecs = vidTotal; pauseVid(); onVidEnd(); return; }
+  updateVidUI();
+  updateVidSlide();
+}
+
+function updateVidUI() {
+  const pct = (vidSecs / vidTotal) * 100;
+  document.getElementById('vtFill').style.width = pct + '%';
+  const m = Math.floor(vidSecs / 60);
+  const s = Math.floor(vidSecs % 60);
+  document.getElementById('vTime').textContent = `${m}:${s.toString().padStart(2,'0')} / 1:10`;
+}
+
+function updateVidSlide() {
+  let ns = 0;
+  for (let i = slideStarts.length - 1; i >= 0; i--) { if (vidSecs >= slideStarts[i]) { ns = i; break; } }
+  if (ns !== vidSlide) goVSlide(ns);
+  document.getElementById('vCaption').innerHTML = captions[vidSlide];
+}
+
+function goVSlide(idx) {
+  document.getElementById('vslide' + (vidSlide + 1)).classList.remove('active');
+  vidSlide = idx;
+  document.getElementById('vslide' + (vidSlide + 1)).classList.add('active');
+  document.querySelectorAll('.sdot').forEach((d,i) => d.classList.toggle('active', i === vidSlide));
+  document.getElementById('vCaption').innerHTML = captions[vidSlide];
+  // Sync audio
+  const audio = document.getElementById('voiceAudio');
+  if (audio && vidPlaying) { audio.currentTime = slideStarts[idx]; }
+  vidSecs = slideStarts[idx];
+  updateVidUI();
+}
+
+function scrubVid(e, el) {
+  const rect = el.getBoundingClientRect();
+  const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+  vidSecs = pct * vidTotal;
+  const audio = document.getElementById('voiceAudio');
+  if (audio) audio.currentTime = vidSecs;
+  updateVidUI();
+  updateVidSlide();
+}
+
+function onVidEnd() {
+  document.getElementById('btnToSetup').classList.add('visible');
+  document.getElementById('capRow').style.display = 'grid';
+  document.getElementById('quoteBanner').style.display = 'block';
+  setTimeout(() => document.getElementById('capRow').scrollIntoView({behavior:'smooth',block:'nearest'}), 500);
+}
+
+// Override pauseVideo/skipVideo for backward compat
+function pauseVideo() { toggleVid(); }
+function skipVideo() { pauseVid(); goTo(1); }
 
 </body>
 </html>
