@@ -2290,17 +2290,27 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.1 });
 
 // ── VIDEO ENGINE ──────────────────────────────────
+// ── VIDEO VOICEOVER AUDIO ──
+const vidAudio = new Audio('voiceover.mp3');
+vidAudio.preload = 'auto';
+
+// Slide timing synced to Roger's voiceover (70s total):
+// 0:00 — "Hey, before you set this up..." (problem: doing it alone)
+// 0:12 — "What you're about to activate is four AI agents..." (solution)
+// 0:25 — "This is your team built around your business..." (the agents)
+// 0:39 — "Setup takes about three minutes..." (setup ease)
+// 0:57 — "Nobody in our space has built anything like this..." (result/CTA)
 const vidSlides = [
   { start: 0,  end: 12, id: 'vslide0' },
-  { start: 12, end: 24, id: 'vslide1' },
-  { start: 24, end: 38, id: 'vslide2' },
-  { start: 38, end: 52, id: 'vslide3' },
-  { start: 52, end: 62, id: 'vslide4' }
+  { start: 12, end: 25, id: 'vslide1' },
+  { start: 25, end: 39, id: 'vslide2' },
+  { start: 39, end: 57, id: 'vslide3' },
+  { start: 57, end: 70, id: 'vslide4' }
 ];
 let vidTimer = null;
 let vidElapsed = 0;
 let vidPaused = false;
-const VID_TOTAL = 62;
+const VID_TOTAL = 70;
 
 function startVideo() {
   document.getElementById('vidLanding').style.display = 'none';
@@ -2308,6 +2318,9 @@ function startVideo() {
   vidElapsed = 0;
   vidPaused = false;
   showVidSlide(0);
+  // Start voiceover
+  vidAudio.currentTime = 0;
+  vidAudio.play().catch(() => {}); // graceful fail if autoplay blocked
   runVidTick();
 }
 
@@ -2315,7 +2328,12 @@ function runVidTick() {
   clearInterval(vidTimer);
   vidTimer = setInterval(() => {
     if (vidPaused) return;
-    vidElapsed++;
+    // Sync elapsed to actual audio time when available
+    if (!vidAudio.paused && vidAudio.duration) {
+      vidElapsed = Math.floor(vidAudio.currentTime);
+    } else {
+      vidElapsed++;
+    }
     // Update progress bar
     const pct = (vidElapsed / VID_TOTAL) * 100;
     const fill = document.getElementById('vidProgressFill');
@@ -2325,7 +2343,7 @@ function runVidTick() {
     if (timeEl) {
       const m = Math.floor(vidElapsed / 60);
       const s = vidElapsed % 60;
-      timeEl.textContent = m + ':' + (s < 10 ? '0' : '') + s + ' / 1:02';
+      timeEl.textContent = m + ':' + (s < 10 ? '0' : '') + s + ' / 1:10';
     }
     // Switch slides
     for (let i = 0; i < vidSlides.length; i++) {
@@ -2337,6 +2355,7 @@ function runVidTick() {
     // End of video
     if (vidElapsed >= VID_TOTAL) {
       clearInterval(vidTimer);
+      vidAudio.pause();
       setTimeout(() => goTo(1), 1200);
     }
   }, 1000);
@@ -2351,12 +2370,19 @@ function showVidSlide(idx) {
 
 function pauseVideo() {
   vidPaused = !vidPaused;
+  if (vidPaused) {
+    vidAudio.pause();
+  } else {
+    vidAudio.play().catch(() => {});
+  }
   const btn = document.getElementById('vidPauseBtn');
   if (btn) btn.textContent = vidPaused ? '▶' : '⏸';
 }
 
 function skipVideo() {
   clearInterval(vidTimer);
+  vidAudio.pause();
+  vidAudio.currentTime = 0;
   goTo(1);
 }
 </script>
