@@ -1624,51 +1624,92 @@ body {
     <div class="step-panel" id="step2">
       <div class="step-eyebrow">// Step 02 of 05</div>
       <div class="step-title">Choose Your <span>Package</span></div>
-      <div class="step-desc">All packages include the full four-agent AI team. <strong>The difference is reach, speed, and automation depth.</strong></div>
+      <div class="step-desc">Three powerful plans to fit your goals. Every package includes your Dreams Score and subscription credits for SaaS qualifications. <strong>Your referral link is embedded — share it and earn commission on every enrollment.</strong></div>
+
+      <!-- AI Agents May Promo Banner -->
+      <div style="background:linear-gradient(135deg,rgba(201,168,76,0.15),rgba(45,212,191,0.08));border:1px solid rgba(201,168,76,0.45);border-radius:10px;padding:14px 18px;margin-bottom:24px;display:flex;align-items:center;gap:14px;">
+        <div style="font-size:26px;flex-shrink:0;">🤖</div>
+        <div>
+          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--gold);font-weight:600;margin-bottom:3px;">★ MAY EXCLUSIVE</div>
+          <div style="font-family:'Cinzel',serif;font-size:14px;color:var(--cream);">AI Agent Team included <span style="color:var(--gold);">FREE</span> with Dreams Score Elite in May only.</div>
+          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--dim);margin-top:4px;">AI Package goes live July 2026 at $997/mo — lock in Elite now to claim your team at no extra cost.</div>
+        </div>
+      </div>
 
       <div class="radio-cards">
+
+        <!-- Individual -->
         <label class="radio-card" onclick="selectCard(this,'pkg')">
-          <input type="radio" name="pkg" value="starter">
+          <input type="radio" name="pkg" value="individual">
           <div class="radio-dot"></div>
           <div class="radio-body">
-            <div class="radio-title">Dreams Score Starter</div>
-            <div class="radio-desc">AI team + CRM + Engager Pro (10 DMs/day). Perfect for agents just getting started with automation.</div>
+            <div class="radio-title">Dreams Score <span style="color:var(--teal);">Individual</span></div>
+            <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;color:var(--dim);margin-bottom:5px;">INDIVIDUAL + FACEBOOK ADS</div>
+            <div class="radio-desc">Dreams Score for Individuals · Facebook Ads campaign · Dreams Business Cloud CRM · Engager Pro (10–30 AI DMs/day) · Weekly personal development coaching · 30 Free Engager Trial Memberships (~$1,000) · 2x Subscription Credits for SaaS</div>
+            <div style="margin-top:6px;font-family:'DM Mono',monospace;font-size:10px;color:var(--teal);">Start at 40% commission · 45% with $10k in 90 days</div>
           </div>
-          <div class="radio-price">$97<span>/month</span></div>
+          <div style="text-align:right;flex-shrink:0;min-width:80px;">
+            <div class="radio-price">$197<span>/mo</span></div>
+            <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--dim);margin-top:3px;">+$300 setup</div>
+          </div>
         </label>
 
-        <label class="radio-card recommended" onclick="selectCard(this,'pkg')">
-          <div class="rec-badge">MOST POPULAR</div>
+        <!-- Pro -->
+        <label class="radio-card" onclick="selectCard(this,'pkg')">
+          <div class="rec-badge" style="background:var(--teal);color:#071520;">MOST POPULAR</div>
           <input type="radio" name="pkg" value="pro">
           <div class="radio-dot"></div>
           <div class="radio-body">
-            <div class="radio-title">Dreams Score Pro</div>
-            <div class="radio-desc">Full AI team + CRM + 50 DMs/day + LinkedIn AI + Social Ad Campaigns. The complete growth engine.</div>
+            <div class="radio-title">Dreams Score <span style="color:var(--teal);">Pro</span></div>
+            <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;color:var(--dim);margin-bottom:5px;">BUSINESS + SOCIAL MEDIA ADS</div>
+            <div class="radio-desc">Dreams Score for Businesses · Social Media Ads campaigns · Dreams Leads (LinkedIn AI Tool) · Multi-platform ad management · Dreams Business Cloud CRM · Links coaching · 20-Minute Millionaire training · 30 Free Engager Trial Memberships (~$1,500) · 3x Subscription Credits for SaaS</div>
+            <div style="margin-top:6px;font-family:'DM Mono',monospace;font-size:10px;color:var(--teal);">Start at 45% commission · 60% with $40k in 90 days</div>
           </div>
-          <div class="radio-price">$297<span>/month</span></div>
+          <div style="text-align:right;flex-shrink:0;min-width:80px;">
+            <div class="radio-price">$297<span>/mo</span></div>
+            <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--dim);margin-top:3px;">+$300 setup</div>
+          </div>
         </label>
 
-        <label class="radio-card" onclick="selectCard(this,'pkg')">
+        <!-- Elite — Best Value -->
+        <label class="radio-card recommended" onclick="selectCard(this,'pkg')" style="border-color:rgba(201,168,76,0.65);box-shadow:0 0 24px rgba(201,168,76,0.18);">
+          <div class="rec-badge" style="background:var(--gold);color:#071520;">★ BEST VALUE</div>
           <input type="radio" name="pkg" value="elite">
           <div class="radio-dot"></div>
           <div class="radio-body">
-            <div class="radio-title">Dreams Score Elite</div>
-            <div class="radio-desc">Everything in Pro + Sales Assistant AI (24/7 bot + voice) + dedicated account manager + priority support.</div>
+            <div class="radio-title">Dreams Score <span style="color:var(--gold);">Elite</span></div>
+            <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;color:var(--dim);margin-bottom:5px;">FULL MEDIA + AI LEAD CAMPAIGN</div>
+            <div class="radio-desc">Everything in Pro · 1 Dreams Score Individual campaign on LinkedIn · 1 Business Score using Intent Data leads · Sales Assistant AI (Bot + Voice) · AI-powered prospect identification · Full agency automation suite · 50 Free Engager Trial Memberships (~$2,500) · 4x Subscription Credits for SaaS · Bonus compensation when team hits $100,000 in production</div>
+            <div style="margin-top:6px;font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);">Start at 50% commission · 60% with $25k in 90 days</div>
+            <div style="margin-top:10px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);border-radius:6px;padding:8px 12px;">
+              <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:1px;">🤖 MAY EXCLUSIVE — AI AGENT TEAM INCLUDED FREE</div>
+              <div style="font-family:'Crimson Pro',serif;font-size:12px;color:var(--dim);margin-top:3px;">AI Package launches July 2026 at $997/mo. Elite members in May get it at no extra cost.</div>
+            </div>
           </div>
-          <div class="radio-price">$597<span>/month</span></div>
+          <div style="text-align:right;flex-shrink:0;min-width:80px;">
+            <div class="radio-price" style="color:var(--gold);">$497<span>/mo</span></div>
+            <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--teal);margin-top:3px;">$400 setup WAIVED</div>
+          </div>
         </label>
+
+      </div>
+
+      <!-- Enroll CTA -->
+      <div style="margin:24px 0 6px;text-align:center;">
+        <a href="https://erctrainers.com" target="_blank" rel="noopener" style="display:inline-block;background:linear-gradient(135deg,var(--teal),#1aa89a);color:#071520;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:2px;font-weight:600;padding:15px 36px;border-radius:8px;text-decoration:none;text-transform:uppercase;box-shadow:0 4px 20px rgba(45,212,191,0.3);">Enroll Now — Choose Your Package →</a>
+        <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--dim);margin-top:8px;letter-spacing:1px;">Opens enrollment portal at erctrainers.com</div>
       </div>
 
       <!-- Comparison Table -->
       <div class="compare-table">
         <div class="compare-header">
           <div class="compare-col">Feature</div>
-          <div class="compare-col">Starter</div>
+          <div class="compare-col">Individual</div>
           <div class="compare-col highlight">Pro</div>
-          <div class="compare-col">Elite</div>
+          <div class="compare-col" style="color:var(--gold);">Elite ★</div>
         </div>
         <div class="compare-row">
-          <div class="compare-cell">4 AI Agents</div>
+          <div class="compare-cell">Dreams Score</div>
           <div class="compare-cell check">✓</div>
           <div class="compare-cell check">✓</div>
           <div class="compare-cell check">✓</div>
@@ -1681,9 +1722,9 @@ body {
         </div>
         <div class="compare-row">
           <div class="compare-cell">Engager Pro (Facebook DMs)</div>
-          <div class="compare-cell" style="color:var(--dim);font-size:12px;">10/day</div>
+          <div class="compare-cell" style="color:var(--dim);font-size:12px;">10–30/day</div>
           <div class="compare-cell" style="color:var(--teal);font-size:12px;">50/day</div>
-          <div class="compare-cell" style="color:var(--teal);font-size:12px;">50/day</div>
+          <div class="compare-cell" style="color:var(--gold);font-size:12px;">50/day</div>
         </div>
         <div class="compare-row">
           <div class="compare-cell">LinkedIn AI Prospecting</div>
@@ -1698,16 +1739,28 @@ body {
           <div class="compare-cell check">✓</div>
         </div>
         <div class="compare-row">
-          <div class="compare-cell">Sales Assistant AI (24/7 Bot)</div>
+          <div class="compare-cell">Sales Assistant AI (Bot + Voice)</div>
           <div class="compare-cell cross">—</div>
           <div class="compare-cell cross">—</div>
           <div class="compare-cell check">✓</div>
         </div>
         <div class="compare-row">
+          <div class="compare-cell">SaaS Subscription Credits</div>
+          <div class="compare-cell" style="color:var(--dim);font-size:12px;">2x</div>
+          <div class="compare-cell" style="color:var(--teal);font-size:12px;">3x</div>
+          <div class="compare-cell" style="color:var(--gold);font-size:12px;">4x</div>
+        </div>
+        <div class="compare-row">
           <div class="compare-cell">Commission Start</div>
-          <div class="compare-cell" style="color:var(--dim);font-size:12px;">35%</div>
+          <div class="compare-cell" style="color:var(--dim);font-size:12px;">40%</div>
           <div class="compare-cell" style="color:var(--teal);font-size:12px;">45%</div>
-          <div class="compare-cell" style="color:var(--gold);font-size:12px;">55%</div>
+          <div class="compare-cell" style="color:var(--gold);font-size:12px;">50%</div>
+        </div>
+        <div class="compare-row">
+          <div class="compare-cell">🤖 AI Agent Team (May only)</div>
+          <div class="compare-cell cross">—</div>
+          <div class="compare-cell cross">—</div>
+          <div class="compare-cell" style="color:var(--gold);font-size:12px;font-weight:600;">FREE ★</div>
         </div>
       </div>
 
