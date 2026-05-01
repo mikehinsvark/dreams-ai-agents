@@ -866,6 +866,7 @@ body {
   margin-bottom: 20px;
   position: relative;
   min-height: 320px;
+  height: 320px;
 }
 .vid-landing {
   display: flex;
@@ -874,8 +875,16 @@ body {
   justify-content: center;
   padding: 40px 32px;
   min-height: 320px;
-  position: relative;
+  position: absolute;
+  inset: 0;
   background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(45,212,191,0.07) 0%, transparent 60%);
+  transition: opacity 0.3s;
+  z-index: 2;
+}
+.vid-landing.hidden {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
 }
 .vid-agents-row {
   display: flex;
@@ -952,7 +961,7 @@ body {
   border-radius: 4px;
 }
 /* Video Slides */
-.vid-show { padding: 0; position: relative; min-height: 320px; }
+.vid-show { padding: 0; position: relative; min-height: 320px; height: 100%; }
 .vid-slide {
   display: none;
   padding: 48px 40px 80px;
@@ -2313,8 +2322,10 @@ let vidPaused = false;
 const VID_TOTAL = 70;
 
 function startVideo() {
-  document.getElementById('vidLanding').style.display = 'none';
-  document.getElementById('vidShow').style.display = 'block';
+  const landing = document.getElementById('vidLanding');
+  const show = document.getElementById('vidShow');
+  if (landing) landing.classList.add('hidden');
+  if (show) { show.style.display = 'block'; show.style.position = 'relative'; show.style.zIndex = '3'; }
   vidElapsed = 0;
   vidPaused = false;
   showVidSlide(0);
