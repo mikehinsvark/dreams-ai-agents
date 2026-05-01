@@ -2423,9 +2423,9 @@ function onVidEnd() {
   setTimeout(() => document.getElementById('capRow').scrollIntoView({behavior:'smooth',block:'nearest'}), 500);
 }
 
-// Override pauseVideo/skipVideo for backward compat
+/// Override pauseVideo/skipVideo for backward compat
 function pauseVideo() { toggleVid(); }
 function skipVideo() { pauseVid(); goTo(1); }
-
+</script>
 </body>
 </html>
