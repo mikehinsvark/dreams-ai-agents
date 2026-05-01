@@ -2211,9 +2211,9 @@ function populateConfirm() {
     [first, last].filter(Boolean).join(' ') + (loc ? ' — ' + loc : '');
 
   const pkgMap = {
-    starter: 'Dreams Score Starter · $97/mo · 35% Commission',
-    pro:     'Dreams Score Pro · $297/mo · 45% Commission',
-    elite:   'Dreams Score Elite · $597/mo · 55% Commission'
+    individual: 'Dreams Score Individual · $197/mo · 40% Commission',
+    pro:          'Dreams Score Pro · $297/mo · 45% Commission',
+    elite:        'Dreams Score Elite · $497/mo · 50% Commission + AI Agent Team FREE'
   };
   const selPkg = document.querySelector('input[name="pkg"]:checked');
   document.getElementById('confirmPkg').textContent = selPkg ? pkgMap[selPkg.value] : 'Not selected';
