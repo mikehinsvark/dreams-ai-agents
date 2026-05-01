@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Command Center — DBR AI Team</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Crimson+Pro:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:        #050d14;
+      --navy:      #071520;
+      --navy-card: #0a1e2e;
+      --navy-mid:  #0d2540;
+      --navy-border: rgba(45,212,191,0.12);
+      --teal:      #2dd4bf;
+      --gold:      #c9a84c;
+      --green:     #22c55e;
+      --purple:    #a855f7;
+      --red:       #ef4444;
+      --cream:     #f0ead8;
+      --text:      #c8d8e8;
+      --dim:       #6a8a9a;
+      --checker-size: 28px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg);
+      background-image:
+        linear-gradient(rgba(45,212,191,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(45,212,191,0.025) 1px, transparent 1px);
+      background-size: var(--checker-size) var(--checker-size);
+      color: var(--text);
+      font-family: 'Crimson Pro', serif;
+      min-height: 100vh;
+    }
+
+    /* ── SITE WRAPPER ── */
+    .site-wrapper {
+      max-width: 1080px;
+      margin: 0 auto;
+      background: var(--navy);
+      min-height: 100vh;
+      box-shadow: 0 0 80px rgba(0,0,0,0.6);
+    }
+
+    /* ── HEADER ── */
+    .site-header {
+      background: linear-gradient(180deg, #071d2e 0%, #050d14 100%);
+      border-bottom: 1px solid var(--navy-border);
+    }
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 40px 16px;
+    }
+    .logo-block {}
+    .logo-title {
+      font-family: 'Cinzel', serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--teal);
+      letter-spacing: 1px;
+      line-height: 1;
+    }
+    .logo-sub {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--dim);
+      text-transform: uppercase;
+      margin-top: 5px;
+    }
+    .header-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 15px;
+      color: var(--gold);
+      text-align: right;
+      line-height: 1.5;
+    }
+    .header-nav {
+      display: flex;
+      gap: 0;
+      padding: 0 40px;
+      border-top: 1px solid var(--navy-border);
+    }
+    .nav-item {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--dim);
+      padding: 12px 18px;
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .nav-item:hover { color: var(--text); }
+    .nav-item.active { color: var(--teal); border-bottom-color: var(--teal); }
+
+    /* ── MAIN CONTENT ── */
+    .portal-main {
+      padding: 36px 40px 60px;
+    }
+
+    /* ── MORNING HEADER ── */
+    .morning-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--teal);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .morning-name {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(28px, 5vw, 44px);
+      font-weight: 700;
+      color: var(--cream);
+      letter-spacing: 1px;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+    .morning-sub {
+      font-family: 'Crimson Pro', serif;
+      font-size: 16px;
+      color: var(--dim);
+    }
+    .morning-sub strong { color: var(--teal); }
+
+    /* ── KPI CARDS ── */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 28px 0;
+    }
+    .kpi-card {
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      border-radius: 10px;
+      padding: 18px 16px;
+    }
+    .kpi-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 10px;
+    }
+    .kpi-value {
+      font-family: 'Cinzel', serif;
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .kpi-delta {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      color: var(--green);
+    }
+
+    /* ── SECTION TITLE ── */
+    .section-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--navy-border);
+    }
+
+    /* ── AGENT CARDS ── */
+    .agents-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .agent-card {
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      border-radius: 12px;
+      padding: 22px;
+      position: relative;
+      transition: border-color 0.2s;
+    }
+    .agent-card:hover { border-color: rgba(45,212,191,0.25); }
+    .agent-status-badge {
+      position: absolute;
+      top: 16px; right: 16px;
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 1.5px;
+    }
+    .agent-icon-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    .agent-icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      border: 1.5px solid;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .agent-name {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .agent-role {
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 1px;
+      color: var(--dim);
+      margin-top: 3px;
+    }
+    .agent-tasks {
+      list-style: none;
+      margin-bottom: 16px;
+    }
+    .agent-tasks li {
+      font-family: 'Crimson Pro', serif;
+      font-size: 13px;
+      color: var(--text);
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .agent-tasks li::before {
+      content: '•';
+      color: var(--teal);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .agent-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+    }
+    .agent-last-active {
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 1px;
+      color: var(--dim);
+    }
+    .btn-talk {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: 1.5px solid;
+      cursor: pointer;
+      background: transparent;
+      transition: all 0.2s;
+    }
+    .btn-talk:hover { opacity: 0.8; }
+
+    /* ── BOTTOM GRID ── */
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .panel {
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      border-radius: 12px;
+      padding: 22px;
+    }
+
+    /* Activity feed */
+    .activity-item {
+      display: flex;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-icon {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      border: 1px solid;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+    .activity-text {
+      font-family: 'Crimson Pro', serif;
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .activity-time {
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 1px;
+      color: var(--dim);
+      margin-top: 4px;
+    }
+
+    /* Pipeline */
+    .pipeline-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .pipeline-row:last-child { border-bottom: none; }
+    .pipeline-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 1px;
+      color: var(--dim);
+      width: 80px;
+      flex-shrink: 0;
+    }
+    .pipeline-bar-wrap {
+      flex: 1;
+      height: 4px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .pipeline-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+    }
+    .pipeline-count {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--text);
+      width: 20px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    /* Residuals */
+    .residual-block {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--navy-border);
+    }
+    .residual-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 8px;
+    }
+    .residual-amount {
+      font-family: 'Cinzel', serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--teal);
+      line-height: 1;
+    }
+    .residual-period {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--dim);
+      margin-top: 4px;
+    }
+    .residual-trajectory {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      color: var(--gold);
+      margin-top: 8px;
+    }
+
+    /* ── QUICK CHAT ── */
+    .chat-panel {
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 32px;
+    }
+    .chat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .chat-active-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 1.5px;
+      color: var(--green);
+      background: rgba(34,197,94,0.1);
+      border: 1px solid rgba(34,197,94,0.2);
+      border-radius: 20px;
+      padding: 4px 10px;
+    }
+    .chat-messages {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 16px;
+      max-height: 280px;
+      overflow-y: auto;
+    }
+    .chat-msg {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .chat-msg.user { flex-direction: row-reverse; }
+    .chat-avatar {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      border: 1px solid;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+    .chat-bubble {
+      background: var(--navy-mid);
+      border: 1px solid var(--navy-border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      max-width: 75%;
+    }
+    .chat-msg.user .chat-bubble {
+      background: rgba(45,212,191,0.08);
+      border-color: rgba(45,212,191,0.2);
+    }
+    .chat-sender {
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 1.5px;
+      color: var(--teal);
+      margin-bottom: 5px;
+    }
+    .chat-text {
+      font-family: 'Crimson Pro', serif;
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .chat-input-row {
+      display: flex;
+      gap: 10px;
+    }
+    .chat-input {
+      flex: 1;
+      background: var(--navy-mid);
+      border: 1px solid var(--navy-border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-family: 'Crimson Pro', serif;
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .chat-input:focus { border-color: var(--teal); }
+    .chat-input::placeholder { color: var(--dim); }
+    .btn-send {
+      background: var(--teal);
+      color: #050d14;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 20px;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-send:hover { background: #25b8a5; }
+
+    /* ── FOOTER ── */
+    .site-footer {
+      background: var(--bg);
+      border-top: 1px solid var(--navy-border);
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-brand {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--dim);
+    }
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+    .footer-links a {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      color: var(--dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--teal); }
+
+    /* ── MOBILE ── */
+    @media (max-width: 700px) {
+      .header-top { padding: 16px 20px; }
+      .header-nav { padding: 0 20px; overflow-x: auto; }
+      .portal-main { padding: 24px 20px 40px; }
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .agents-grid { grid-template-columns: 1fr; }
+      .bottom-grid { grid-template-columns: 1fr; }
+      .site-footer { flex-direction: column; gap: 12px; text-align: center; }
+      .footer-links { flex-wrap: wrap; justify-content: center; }
+      .header-tagline { display: none; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .agent-card { animation: fadeUp 0.5s ease both; }
+    .agent-card:nth-child(2) { animation-delay: 0.1s; }
+    .agent-card:nth-child(3) { animation-delay: 0.2s; }
+    .agent-card:nth-child(4) { animation-delay: 0.3s; }
+  </style>
+</head>
+<body>
+
+<div class="site-wrapper">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-top">
+      <div class="logo-block">
+        <div class="logo-title">DBR AI Agents</div>
+        <div class="logo-sub">Agent Command Center</div>
+      </div>
+      <div class="header-tagline">
+        "Your AI team is active<br>and ready to work."
+      </div>
+    </div>
+    <nav class="header-nav">
+      <a class="nav-item" href="index.html" target="_self">← Setup Wizard</a>
+      <span class="nav-item active">Command Center</span>
+      <a class="nav-item" href="https://dreamsfaststart.com" target="_blank">DBR Training</a>
+      <a class="nav-item" href="https://familylegacy.pro" target="_blank">Family Legacy</a>
+      <a class="nav-item" href="https://renewalsforlifestyle.com" target="_blank">RenewalsForLife</a>
+    </nav>
+  </header>
+
+  <!-- MAIN -->
+  <main class="portal-main">
+
+    <!-- Morning Header -->
+    <div class="morning-eyebrow">// Good Morning, Agent</div>
+    <div class="morning-name">Sarah Mitchell</div>
+    <p class="morning-sub">Your AI team is active and ready. You have <strong>3 priority actions</strong> waiting today.</p>
+
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Active Recruits</div>
+        <div class="kpi-value" style="color:var(--teal)">14</div>
+        <div class="kpi-delta">↑ 3 this week</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">B2B Prospects</div>
+        <div class="kpi-value" style="color:var(--gold)">8</div>
+        <div class="kpi-delta" style="color:var(--gold)">2 meetings this week</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Monthly Residual</div>
+        <div class="kpi-value" style="color:var(--green)">$2,140</div>
+        <div class="kpi-delta">↑ $340 vs last month</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">AI Tasks Done</div>
+        <div class="kpi-value" style="color:var(--purple)">47</div>
+        <div class="kpi-delta" style="color:var(--dim)">This month</div>
+      </div>
+    </div>
+
+    <!-- Your AI Team -->
+    <div class="section-title">Your AI Team</div>
+    <div class="agents-grid">
+
+      <!-- Recruiting Agent -->
+      <div class="agent-card">
+        <div class="agent-status-badge" style="color:var(--green)">● ACTIVE</div>
+        <div class="agent-icon-row">
+          <div class="agent-icon" style="background:rgba(45,212,191,0.1);border-color:rgba(45,212,191,0.3)">🤖</div>
+          <div>
+            <div class="agent-name" style="color:var(--teal)">Recruiting Agent</div>
+            <div class="agent-role">Pipeline builder · Outreach writer · Objection handler</div>
+          </div>
+        </div>
+        <ul class="agent-tasks">
+          <li>Draft LinkedIn outreach for 3 prospects</li>
+          <li>Prepare follow-up for Marcus (Day 5)</li>
+          <li>Generate recruiting script for tonight's call</li>
+        </ul>
+        <div class="agent-footer">
+          <div class="agent-last-active">Last active: 2h ago</div>
+          <button class="btn-talk" style="color:var(--teal);border-color:rgba(45,212,191,0.4);" onclick="openChat('Recruiting Agent')">TALK TO AGENT →</button>
+        </div>
+      </div>
+
+      <!-- Onboarding Agent -->
+      <div class="agent-card">
+        <div class="agent-status-badge" style="color:var(--green)">● ACTIVE</div>
+        <div class="agent-icon-row">
+          <div class="agent-icon" style="background:rgba(201,168,76,0.1);border-color:rgba(201,168,76,0.3)">🎯</div>
+          <div>
+            <div class="agent-name" style="color:var(--gold)">Onboarding Agent</div>
+            <div class="agent-role">New agent guide · DBR training · First 30 days</div>
+          </div>
+        </div>
+        <ul class="agent-tasks">
+          <li>James (Day 3) has a Section 125 question</li>
+          <li>Send Week 1 checklist to new recruit Tanya</li>
+          <li>Review onboarding progress: 2 agents behind</li>
+        </ul>
+        <div class="agent-footer">
+          <div class="agent-last-active">Last active: 45m ago</div>
+          <button class="btn-talk" style="color:var(--gold);border-color:rgba(201,168,76,0.4);" onclick="openChat('Onboarding Agent')">TALK TO AGENT →</button>
+        </div>
+      </div>
+
+      <!-- B2B Sales Agent -->
+      <div class="agent-card">
+        <div class="agent-status-badge" style="color:var(--green)">● ACTIVE</div>
+        <div class="agent-icon-row">
+          <div class="agent-icon" style="background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.3)">💼</div>
+          <div>
+            <div class="agent-name" style="color:var(--green)">B2B Sales Agent</div>
+            <div class="agent-role">Employer presentations · Section 125 · FICA · R&D Credits</div>
+          </div>
+        </div>
+        <ul class="agent-tasks">
+          <li>Prep presentation for Apex Roofing (Fri 10am)</li>
+          <li>Calculate FICA savings for 38-employee client</li>
+          <li>Draft follow-up proposal for Johnson Electric</li>
+        </ul>
+        <div class="agent-footer">
+          <div class="agent-last-active">Last active: 1h ago</div>
+          <button class="btn-talk" style="color:var(--green);border-color:rgba(34,197,94,0.4);" onclick="openChat('B2B Sales Agent')">TALK TO AGENT →</button>
+        </div>
+      </div>
+
+      <!-- Intelligence Agent -->
+      <div class="agent-card">
+        <div class="agent-status-badge" style="color:var(--green)">● ACTIVE</div>
+        <div class="agent-icon-row">
+          <div class="agent-icon" style="background:rgba(168,85,247,0.1);border-color:rgba(168,85,247,0.3)">🧠</div>
+          <div>
+            <div class="agent-name" style="color:var(--purple)">Intelligence Agent</div>
+            <div class="agent-role">Strategy · Focus · Daily priorities · Business snapshot</div>
+          </div>
+        </div>
+        <ul class="agent-tasks">
+          <li>Your top 3 priorities for today</li>
+          <li>Weekly performance summary ready</li>
+          <li>Residual growth forecast: 90-day projection</li>
+        </ul>
+        <div class="agent-footer">
+          <div class="agent-last-active">Last active: 12m ago</div>
+          <button class="btn-talk" style="color:var(--purple);border-color:rgba(168,85,247,0.4);" onclick="openChat('Intelligence Agent')">TALK TO AGENT →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Grid: Activity + Pipeline -->
+    <div class="bottom-grid">
+
+      <!-- Recent Activity -->
+      <div class="panel">
+        <div class="section-title">Recent AI Activity</div>
+        <div class="activity-item">
+          <div class="activity-icon" style="background:rgba(45,212,191,0.1);border-color:rgba(45,212,191,0.3)">🤖</div>
+          <div>
+            <div class="activity-text">Recruiting Agent drafted outreach message for David Reyes — LinkedIn DM ready to send</div>
+            <div class="activity-time">Today · 9:14am</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon" style="background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.3)">💼</div>
+          <div>
+            <div class="activity-text">B2B Agent calculated $18,400/yr FICA savings for Apex Roofing (38 employees)</div>
+            <div class="activity-time">Today · 8:47am</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon" style="background:rgba(201,168,76,0.1);border-color:rgba(201,168,76,0.3)">🎯</div>
+          <div>
+            <div class="activity-text">Onboarding Agent answered James's Section 125 compliance question automatically</div>
+            <div class="activity-time">Yesterday · 11:32pm</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon" style="background:rgba(168,85,247,0.1);border-color:rgba(168,85,247,0.3)">🧠</div>
+          <div>
+            <div class="activity-text">Intelligence Agent generated weekly snapshot — residuals up 18% month-over-month</div>
+            <div class="activity-time">Yesterday · 7:00am</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pipeline + Residuals -->
+      <div class="panel">
+        <div class="section-title">Recruiting Pipeline</div>
+        <div class="pipeline-row">
+          <div class="pipeline-label">Contacted</div>
+          <div class="pipeline-bar-wrap"><div class="pipeline-bar-fill" style="width:100%;background:var(--teal)"></div></div>
+          <div class="pipeline-count">17</div>
+        </div>
+        <div class="pipeline-row">
+          <div class="pipeline-label">Interested</div>
+          <div class="pipeline-bar-wrap"><div class="pipeline-bar-fill" style="width:65%;background:var(--gold)"></div></div>
+          <div class="pipeline-count">11</div>
+        </div>
+        <div class="pipeline-row">
+          <div class="pipeline-label">Presented</div>
+          <div class="pipeline-bar-wrap"><div class="pipeline-bar-fill" style="width:41%;background:var(--purple)"></div></div>
+          <div class="pipeline-count">7</div>
+        </div>
+        <div class="pipeline-row">
+          <div class="pipeline-label">Contracted</div>
+          <div class="pipeline-bar-wrap"><div class="pipeline-bar-fill" style="width:24%;background:var(--green)"></div></div>
+          <div class="pipeline-count">4</div>
+        </div>
+        <div class="pipeline-row">
+          <div class="pipeline-label">Active</div>
+          <div class="pipeline-bar-wrap"><div class="pipeline-bar-fill" style="width:12%;background:var(--red)"></div></div>
+          <div class="pipeline-count">2</div>
+        </div>
+
+        <div class="residual-block">
+          <div class="residual-label">DBR Daily Bonus Residuals</div>
+          <div class="residual-amount">$2,140</div>
+          <div class="residual-period">/month · growing</div>
+          <div class="residual-trajectory">At current trajectory: $4,800/mo in 90 days</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Chat -->
+    <div class="chat-panel">
+      <div class="chat-header">
+        <div class="section-title" style="margin-bottom:0;border-bottom:none;">Quick Chat — Ask Any Agent</div>
+        <div class="chat-active-badge" id="chatAgentBadge">● RECRUITING AGENT ACTIVE</div>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-msg">
+          <div class="chat-avatar" style="background:rgba(45,212,191,0.1);border-color:rgba(45,212,191,0.3)">🤖</div>
+          <div class="chat-bubble">
+            <div class="chat-sender">RECRUITING AGENT</div>
+            <div class="chat-text">Good morning Sarah. I've drafted outreach for 3 of your warm prospects from last week. David Reyes looks most ready — he's been active on LinkedIn and his current job shows signs of income ceiling. Want me to send that draft to your phone?</div>
+          </div>
+        </div>
+        <div class="chat-msg user">
+          <div class="chat-avatar" style="background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1)">👤</div>
+          <div class="chat-bubble">
+            <div class="chat-text">Yes send it. Also what should I say when he asks about the time commitment?</div>
+          </div>
+        </div>
+        <div class="chat-msg">
+          <div class="chat-avatar" style="background:rgba(45,212,191,0.1);border-color:rgba(45,212,191,0.3)">🤖</div>
+          <div class="chat-bubble">
+            <div class="chat-sender">RECRUITING AGENT</div>
+            <div class="chat-text">Great question. For David's profile — he's a W-2 manager, values stability — I'd use the "parallel build" frame: "This runs alongside what you're already doing. Most of our agents spend 8-10 hours/week in the first 90 days and start seeing residuals by month two." Want me to build a full objection sheet for his profile?</div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-input-row">
+        <input class="chat-input" id="chatInput" type="text" placeholder="Ask your AI team anything — recruiting, sales prep, onboarding help..." onkeydown="if(event.key==='Enter') sendChat()">
+        <button class="btn-send" onclick="sendChat()">SEND</button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-brand">DBR · Dreams Business Resources</div>
+    <div class="footer-links">
+      <a href="https://renewalsforlifestyle.com" target="_blank">RenewalsForLife.com</a>
+      <a href="https://familylegacy.pro" target="_blank">Legacy Builder</a>
+      <a href="https://dreamsfaststart.com" target="_blank">DBR Training</a>
+      <a href="index.html">Setup Wizard</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+function openChat(agentName) {
+  document.getElementById('chatAgentBadge').textContent = '● ' + agentName.toUpperCase() + ' ACTIVE';
+  document.getElementById('chatInput').placeholder = 'Ask your ' + agentName + ' anything...';
+  document.getElementById('chatInput').focus();
+}
+
+function sendChat() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+
+  const messages = document.getElementById('chatMessages');
+
+  // Add user message
+  const userMsg = document.createElement('div');
+  userMsg.className = 'chat-msg user';
+  userMsg.innerHTML = `
+    <div class="chat-avatar" style="background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1)">👤</div>
+    <div class="chat-bubble"><div class="chat-text">${msg}</div></div>
+  `;
+  messages.appendChild(userMsg);
+  input.value = '';
+  messages.scrollTop = messages.scrollHeight;
+
+  // Simulate agent response
+  setTimeout(() => {
+    const agentBadge = document.getElementById('chatAgentBadge').textContent;
+    const agentName = agentBadge.replace('● ', '').replace(' ACTIVE', '');
+    const responses = [
+      "Great question. Let me pull up the latest data on that and prepare a response for you.",
+      "On it. I'll have a draft ready for you within the next few minutes.",
+      "I've analyzed your pipeline and have 3 recommendations. Want me to walk you through them?",
+      "Based on your current trajectory, here's what I'd prioritize today...",
+      "I can help with that. Give me a moment to check your recent activity and prepare the best approach."
+    ];
+    const reply = responses[Math.floor(Math.random() * responses.length)];
+
+    const agentMsg = document.createElement('div');
+    agentMsg.className = 'chat-msg';
+    agentMsg.innerHTML = `
+      <div class="chat-avatar" style="background:rgba(45,212,191,0.1);border-color:rgba(45,212,191,0.3)">🤖</div>
+      <div class="chat-bubble">
+        <div class="chat-sender">${agentName.toUpperCase()}</div>
+        <div class="chat-text">${reply}</div>
+      </div>
+    `;
+    messages.appendChild(agentMsg);
+    messages.scrollTop = messages.scrollHeight;
+  }, 1200);
+}
+</script>
+
+</body>
+</html>
