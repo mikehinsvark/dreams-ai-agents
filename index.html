@@ -1518,11 +1518,11 @@ body {
                 <div class="vid-time" id="vTime">0:00 / 1:10</div>
               </div>
               <div class="slide-dots" id="vSlideDots">
-                <div class="sdot active" onclick="goVSlide(0)"></div>
-                <div class="sdot" onclick="goVSlide(1)"></div>
-                <div class="sdot" onclick="goVSlide(2)"></div>
-                <div class="sdot" onclick="goVSlide(3)"></div>
-                <div class="sdot" onclick="goVSlide(4)"></div>
+                <div class="sdot active" onclick="goVSlide(0,true)"></div>
+                <div class="sdot" onclick="goVSlide(1,true)"></div>
+                <div class="sdot" onclick="goVSlide(2,true)"></div>
+                <div class="sdot" onclick="goVSlide(3,true)"></div>
+                <div class="sdot" onclick="goVSlide(4,true)"></div>
               </div>
             </div>
           </div>
@@ -2393,17 +2393,20 @@ function updateVidSlide() {
   document.getElementById('vCaption').innerHTML = captions[vidSlide];
 }
 
-function goVSlide(idx) {
+function goVSlide(idx, seekAudio) {
   document.getElementById('vslide' + (vidSlide + 1)).classList.remove('active');
   vidSlide = idx;
   document.getElementById('vslide' + (vidSlide + 1)).classList.add('active');
   document.querySelectorAll('.sdot').forEach((d,i) => d.classList.toggle('active', i === vidSlide));
   document.getElementById('vCaption').innerHTML = captions[vidSlide];
-  // Sync audio
-  const audio = document.getElementById('voiceAudio');
-  if (audio && vidPlaying) { audio.currentTime = slideStarts[idx]; }
-  vidSecs = slideStarts[idx];
-  updateVidUI();
+  // Only seek audio when user manually clicks a dot (seekAudio=true)
+  // During auto-advance, audio plays uninterrupted
+  if (seekAudio) {
+    const audio = document.getElementById('voiceAudio');
+    if (audio) { audio.currentTime = slideStarts[idx]; }
+    vidSecs = slideStarts[idx];
+    updateVidUI();
+  }
 }
 
 function scrubVid(e, el) {
