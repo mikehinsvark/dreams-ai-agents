@@ -857,27 +857,86 @@ body {
 /* ── STEP 0: VIDEO INTRO ── */
 #step0 { max-width: 760px; }
 
-/* Video Player */
+/* ── CANVAS VIDEO PLAYER ── */
 .vid-player {
-  background: var(--navy-card);
-  border: 1px solid var(--navy-border);
+  background: #030a12;
+  border: 1px solid rgba(45,212,191,0.2);
   border-radius: 14px;
   overflow: hidden;
   margin-bottom: 20px;
   position: relative;
-  min-height: 320px;
-  height: 320px;
 }
+/* Terminal chrome bar */
+.vid-chrome {
+  background: rgba(5,13,22,0.95);
+  border-bottom: 1px solid rgba(45,212,191,0.15);
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.vid-chrome-dots { display:flex; gap:5px; }
+.vid-chrome-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+}
+.vid-chrome-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: rgba(45,212,191,0.5);
+  flex: 1;
+  text-align: center;
+}
+.vid-chrome-live {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: #22c55e;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.vid-chrome-live::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: blink 1.2s ease-in-out infinite;
+}
+/* Canvas stage */
+.vid-stage-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/7;
+}
+#vidStage {
+  display: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+#introCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+#vidPlayCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+/* Landing overlay */
 .vid-landing {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px 32px;
-  min-height: 320px;
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(45,212,191,0.07) 0%, transparent 60%);
+  background: #030a12;
+  cursor: pointer;
   transition: opacity 0.3s;
   z-index: 2;
 }
@@ -886,152 +945,115 @@ body {
   pointer-events: none;
   visibility: hidden;
 }
-.vid-agents-row {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 28px;
-  justify-content: center;
-}
-.vid-agent-block {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-.vid-agent-icon {
-  width: 56px; height: 56px;
-  border-radius: 14px;
-  border: 1.5px solid;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 22px;
-  animation: agFloat 3s ease-in-out infinite;
-}
-.vid-agent-block:nth-child(2) .vid-agent-icon { animation-delay: 0.75s; }
-.vid-agent-block:nth-child(3) .vid-agent-icon { animation-delay: 1.5s; }
-.vid-agent-block:nth-child(4) .vid-agent-icon { animation-delay: 2.25s; }
-.vid-agent-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 8px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
+.vid-landing-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 .vid-play-btn {
-  width: 64px; height: 64px;
+  width: 72px; height: 72px;
   border-radius: 50%;
-  background: rgba(45,212,191,0.15);
+  background: rgba(45,212,191,0.12);
   border: 2px solid var(--teal);
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  transition: all 0.2s;
-  margin-bottom: 20px;
-  box-shadow: 0 0 24px rgba(45,212,191,0.2);
+  transition: all 0.25s;
+  box-shadow: 0 0 32px rgba(45,212,191,0.25);
+  position: relative;
+  z-index: 3;
+  margin-bottom: 16px;
 }
 .vid-play-btn:hover {
-  background: rgba(45,212,191,0.25);
-  transform: scale(1.08);
-  box-shadow: 0 0 40px rgba(45,212,191,0.35);
+  background: rgba(45,212,191,0.22);
+  transform: scale(1.1);
+  box-shadow: 0 0 50px rgba(45,212,191,0.4);
 }
-.vid-play-icon {
-  color: var(--teal);
-  font-size: 22px;
-  margin-left: 4px;
-}
-.vid-tagline-block { text-align: center; }
-.vid-tagline-title {
+.vid-play-icon { color: var(--teal); font-size: 26px; margin-left: 5px; }
+.vid-landing-title {
   font-family: 'Cinzel', serif;
   font-size: 15px;
   letter-spacing: 2px;
   color: var(--cream);
-  margin-bottom: 5px;
+  position: relative; z-index: 3;
+  margin-bottom: 6px;
 }
-.vid-tagline-sub {
+.vid-landing-sub {
   font-family: 'DM Mono', monospace;
   font-size: 9px;
   letter-spacing: 1.5px;
   color: var(--dim);
+  position: relative; z-index: 3;
 }
-.vid-duration {
-  position: absolute;
-  bottom: 14px; right: 16px;
+/* Caption bar */
+.vid-caption-bar {
+  background: rgba(3,10,18,0.92);
+  border-top: 1px solid rgba(45,212,191,0.1);
+  padding: 8px 16px;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.vid-caption-cc {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  background: rgba(45,212,191,0.15);
+  border: 1px solid rgba(45,212,191,0.3);
+  color: var(--teal);
+  padding: 1px 5px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+#vidCaption {
   font-family: 'DM Mono', monospace;
   font-size: 10px;
-  color: var(--dim);
-  background: rgba(5,13,20,0.6);
-  padding: 3px 8px;
-  border-radius: 4px;
+  color: rgba(200,216,232,0.8);
+  letter-spacing: 0.3px;
+  line-height: 1.4;
 }
-/* Video Slides */
-.vid-show { padding: 0; position: relative; min-height: 320px; height: 100%; }
-.vid-slide {
-  display: none;
-  padding: 48px 40px 80px;
-  animation: stepIn 0.5s ease both;
-  min-height: 280px;
-}
-.vid-slide.active { display: block; }
-.vslide-eyebrow {
-  font-family: 'DM Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 3px;
-  color: var(--teal);
-  margin-bottom: 14px;
-  opacity: 0.8;
-}
-.vslide-title {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(24px,4vw,36px);
-  font-weight: 700;
-  color: var(--cream);
-  line-height: 1.15;
-  margin-bottom: 16px;
-}
-.vslide-title span { color: var(--teal); }
-.vslide-body {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 18px;
-  color: var(--dim);
-  line-height: 1.7;
-  font-style: italic;
-  max-width: 520px;
+/* Controls bar */
+.vid-controls {
+  background: rgba(5,13,22,0.95);
+  border-top: 1px solid rgba(45,212,191,0.1);
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 .vid-progress-bar {
-  position: absolute;
-  bottom: 48px; left: 40px; right: 40px;
-  height: 2px;
-  background: var(--navy-border);
-  border-radius: 2px;
+  flex: 1;
+  height: 3px;
+  background: rgba(45,212,191,0.12);
+  border-radius: 3px;
+  cursor: pointer;
 }
 .vid-progress-fill {
   height: 100%;
   background: linear-gradient(90deg, var(--teal), var(--gold));
-  border-radius: 2px;
+  border-radius: 3px;
   width: 0%;
-  transition: width 0.5s linear;
-}
-.vid-controls {
-  position: absolute;
-  bottom: 14px; left: 40px; right: 40px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  transition: width 0.3s linear;
 }
 .vid-ctrl-btn {
-  background: rgba(45,212,191,0.08);
-  border: 1px solid rgba(45,212,191,0.2);
+  background: rgba(45,212,191,0.07);
+  border: 1px solid rgba(45,212,191,0.18);
   color: var(--teal);
-  border-radius: 6px;
-  padding: 5px 12px;
-  font-size: 12px;
+  border-radius: 5px;
+  padding: 4px 10px;
+  font-size: 11px;
   cursor: pointer;
   transition: all 0.2s;
   font-family: 'DM Mono', monospace;
+  white-space: nowrap;
 }
-.vid-ctrl-btn:hover { background: rgba(45,212,191,0.15); }
+.vid-ctrl-btn:hover { background: rgba(45,212,191,0.14); }
 .vid-ctrl-time {
   font-family: 'DM Mono', monospace;
   font-size: 10px;
   color: var(--dim);
-  flex: 1;
+  white-space: nowrap;
 }
 /* Stat boxes */
 .vid-stats-row {
@@ -1453,76 +1475,49 @@ body {
         You're about to set up something <strong>no other agent in this industry has.</strong> Watch this 60-second explainer before you begin — it'll make everything click.
       </p>
 
-      <!-- Video Player -->
+      <!-- Canvas Video Player -->
       <div class="vid-player" id="vidPlayer">
-        <div class="vid-landing" id="vidLanding">
-          <!-- Agent icons row -->
-          <div class="vid-agents-row">
-            <div class="vid-agent-block">
-              <div class="vid-agent-icon" style="background:rgba(45,212,191,0.15);border-color:rgba(45,212,191,0.4)">🤖</div>
-              <div class="vid-agent-label" style="color:var(--teal)">RECRUITING</div>
-            </div>
-            <div class="vid-agent-block">
-              <div class="vid-agent-icon" style="background:rgba(201,168,76,0.15);border-color:rgba(201,168,76,0.4)">🎯</div>
-              <div class="vid-agent-label" style="color:var(--gold)">ONBOARDING</div>
-            </div>
-            <div class="vid-agent-block">
-              <div class="vid-agent-icon" style="background:rgba(34,197,94,0.15);border-color:rgba(34,197,94,0.4)">💼</div>
-              <div class="vid-agent-label" style="color:var(--green)">B2B SALES</div>
-            </div>
-            <div class="vid-agent-block">
-              <div class="vid-agent-icon" style="background:rgba(168,85,247,0.15);border-color:rgba(168,85,247,0.4)">🧠</div>
-              <div class="vid-agent-label" style="color:#a855f7">INTELLIGENCE</div>
-            </div>
+        <!-- Terminal chrome bar -->
+        <div class="vid-chrome">
+          <div class="vid-chrome-dots">
+            <div class="vid-chrome-dot" style="background:#ff5f57"></div>
+            <div class="vid-chrome-dot" style="background:#febc2e"></div>
+            <div class="vid-chrome-dot" style="background:#28c840"></div>
           </div>
-          <!-- Play button -->
-          <button class="vid-play-btn" onclick="startVideo()" aria-label="Play explainer video">
-            <div class="vid-play-icon">▶</div>
-          </button>
-          <!-- Tagline -->
-          <div class="vid-tagline-block">
-            <div class="vid-tagline-title">YOUR PERSONAL AI TEAM</div>
-            <div class="vid-tagline-sub">Working 24/7 · Knows your pipeline · No tech skills needed</div>
-          </div>
-          <!-- Duration badge -->
-          <div class="vid-duration">1:02</div>
+          <div class="vid-chrome-label">// DBR_AGENT_BRIEFING_v2.exe</div>
+          <div class="vid-chrome-live">LIVE</div>
         </div>
 
-        <!-- Slide show (hidden until play) -->
-        <div class="vid-show" id="vidShow" style="display:none;">
-          <div class="vid-slide active" id="vslide0">
-            <div class="vslide-eyebrow">// CHAPTER 1 — THE PROBLEM</div>
-            <div class="vslide-title">Most agents are<br><span>doing it alone.</span></div>
-            <div class="vslide-body">Chasing leads, following up, onboarding new recruits, preparing B2B presentations — all manually. There aren't enough hours in the day.</div>
+        <!-- Canvas stage wrapper -->
+        <div class="vid-stage-wrap">
+          <!-- Landing overlay (shown before play) -->
+          <div class="vid-landing" id="vidLanding" onclick="startVideo()">
+            <canvas class="vid-landing-canvas" id="introCanvas"></canvas>
+            <button class="vid-play-btn" aria-label="Play explainer video">
+              <div class="vid-play-icon">▶</div>
+            </button>
+            <div class="vid-landing-title">YOUR PERSONAL AI TEAM</div>
+            <div class="vid-landing-sub">Working 24/7 · Knows your pipeline · No tech skills needed</div>
           </div>
-          <div class="vid-slide" id="vslide1">
-            <div class="vslide-eyebrow">// CHAPTER 2 — THE SOLUTION</div>
-            <div class="vslide-title">Your AI team<br><span>changes everything.</span></div>
-            <div class="vslide-body">Four specialized AI agents — each trained on DBR's systems — working 24/7 so you can focus on conversations, not logistics.</div>
+
+          <!-- Canvas playback stage (hidden until play) -->
+          <div id="vidStage">
+            <canvas id="vidPlayCanvas"></canvas>
           </div>
-          <div class="vid-slide" id="vslide2">
-            <div class="vslide-eyebrow">// CHAPTER 3 — THE AGENTS</div>
-            <div class="vslide-title">Four agents.<br><span>One mission.</span></div>
-            <div class="vslide-body"><strong style="color:var(--teal)">Recruiting Agent</strong> finds and qualifies prospects. <strong style="color:var(--gold)">Onboarding Agent</strong> guides new recruits. <strong style="color:var(--green)">B2B Sales Agent</strong> prepares employer presentations. <strong style="color:#a855f7">Intelligence Agent</strong> briefs you every morning.</div>
-          </div>
-          <div class="vid-slide" id="vslide3">
-            <div class="vslide-eyebrow">// CHAPTER 4 — THE SETUP</div>
-            <div class="vslide-title">8 minutes.<br><span>Zero tech skills.</span></div>
-            <div class="vslide-body">Answer 5 questions about your market, your goals, and your tools. Your AI team configures itself automatically — no passwords, no API keys, no tech required.</div>
-          </div>
-          <div class="vid-slide" id="vslide4">
-            <div class="vslide-eyebrow">// CHAPTER 5 — THE RESULT</div>
-            <div class="vslide-title">While you sleep,<br><span>they work.</span></div>
-            <div class="vslide-body">Your AI team sends DMs, qualifies leads, answers compliance questions, and delivers your daily briefing at 7am. This is what the top 1% of DBR agents will use in 2026.</div>
-          </div>
-          <!-- Progress bar -->
+        </div>
+
+        <!-- Caption bar -->
+        <div class="vid-caption-bar" id="vidCaptionBar" style="display:none;">
+          <span class="vid-caption-cc">CC</span>
+          <span id="vidCaption"></span>
+        </div>
+
+        <!-- Controls bar -->
+        <div class="vid-controls" id="vidControlsBar" style="display:none;">
+          <button class="vid-ctrl-btn" onclick="pauseVideo()" id="vidPauseBtn">⏸ PAUSE</button>
           <div class="vid-progress-bar"><div class="vid-progress-fill" id="vidProgressFill"></div></div>
-          <!-- Controls -->
-          <div class="vid-controls">
-            <button class="vid-ctrl-btn" onclick="pauseVideo()" id="vidPauseBtn">⏸</button>
-            <div class="vid-ctrl-time" id="vidTime">0:00 / 1:02</div>
-            <button class="vid-ctrl-btn" onclick="skipVideo()">⏭ Skip</button>
-          </div>
+          <div class="vid-ctrl-time" id="vidTime">0:00 / 1:10</div>
+          <button class="vid-ctrl-btn" onclick="skipVideo()">⏭ Skip</button>
         </div>
       </div>
 
@@ -2298,105 +2293,9 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.1 });
 
-// ── VIDEO ENGINE ──────────────────────────────────
-// ── VIDEO VOICEOVER AUDIO ──
-const vidAudio = new Audio('voiceover.mp3');
-vidAudio.preload = 'auto';
-
-// Slide timing synced to Roger's voiceover (70s total):
-// 0:00 — "Hey, before you set this up..." (problem: doing it alone)
-// 0:12 — "What you're about to activate is four AI agents..." (solution)
-// 0:25 — "This is your team built around your business..." (the agents)
-// 0:39 — "Setup takes about three minutes..." (setup ease)
-// 0:57 — "Nobody in our space has built anything like this..." (result/CTA)
-const vidSlides = [
-  { start: 0,  end: 12, id: 'vslide0' },
-  { start: 12, end: 25, id: 'vslide1' },
-  { start: 25, end: 39, id: 'vslide2' },
-  { start: 39, end: 57, id: 'vslide3' },
-  { start: 57, end: 70, id: 'vslide4' }
-];
-let vidTimer = null;
-let vidElapsed = 0;
-let vidPaused = false;
-const VID_TOTAL = 70;
-
-function startVideo() {
-  const landing = document.getElementById('vidLanding');
-  const show = document.getElementById('vidShow');
-  if (landing) landing.classList.add('hidden');
-  if (show) { show.style.display = 'block'; show.style.position = 'relative'; show.style.zIndex = '3'; }
-  vidElapsed = 0;
-  vidPaused = false;
-  showVidSlide(0);
-  // Start voiceover
-  vidAudio.currentTime = 0;
-  vidAudio.play().catch(() => {}); // graceful fail if autoplay blocked
-  runVidTick();
-}
-
-function runVidTick() {
-  clearInterval(vidTimer);
-  vidTimer = setInterval(() => {
-    if (vidPaused) return;
-    // Sync elapsed to actual audio time when available
-    if (!vidAudio.paused && vidAudio.duration) {
-      vidElapsed = Math.floor(vidAudio.currentTime);
-    } else {
-      vidElapsed++;
-    }
-    // Update progress bar
-    const pct = (vidElapsed / VID_TOTAL) * 100;
-    const fill = document.getElementById('vidProgressFill');
-    if (fill) fill.style.width = pct + '%';
-    // Update time display
-    const timeEl = document.getElementById('vidTime');
-    if (timeEl) {
-      const m = Math.floor(vidElapsed / 60);
-      const s = vidElapsed % 60;
-      timeEl.textContent = m + ':' + (s < 10 ? '0' : '') + s + ' / 1:10';
-    }
-    // Switch slides
-    for (let i = 0; i < vidSlides.length; i++) {
-      if (vidElapsed >= vidSlides[i].start && vidElapsed < vidSlides[i].end) {
-        showVidSlide(i);
-        break;
-      }
-    }
-    // End of video
-    if (vidElapsed >= VID_TOTAL) {
-      clearInterval(vidTimer);
-      vidAudio.pause();
-      setTimeout(() => goTo(1), 1200);
-    }
-  }, 1000);
-}
-
-function showVidSlide(idx) {
-  vidSlides.forEach((s, i) => {
-    const el = document.getElementById(s.id);
-    if (el) el.classList.toggle('active', i === idx);
-  });
-}
-
-function pauseVideo() {
-  vidPaused = !vidPaused;
-  if (vidPaused) {
-    vidAudio.pause();
-  } else {
-    vidAudio.play().catch(() => {});
-  }
-  const btn = document.getElementById('vidPauseBtn');
-  if (btn) btn.textContent = vidPaused ? '▶' : '⏸';
-}
-
-function skipVideo() {
-  clearInterval(vidTimer);
-  vidAudio.pause();
-  vidAudio.currentTime = 0;
-  goTo(1);
-}
+// ── VIDEO ENGINE: loaded from canvas_video.js ──
 </script>
+<script src="canvas_video.js"></script>
 
 </body>
 </html>
