@@ -244,8 +244,25 @@
       border-radius: 10px;
       padding: 18px 16px;
       transition: border-color 0.2s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
     }
-    .kpi-card:hover { border-color: rgba(45,212,191,0.25); transform: translateY(-2px); }
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: 10px 10px 0 0;
+    }
+    .kpi-card:hover { transform: translateY(-2px); }
+    .kpi-card.kpi-teal { border-color: rgba(45,212,191,0.25); }
+    .kpi-card.kpi-teal::before { background: var(--teal); box-shadow: 0 0 12px rgba(45,212,191,0.5); }
+    .kpi-card.kpi-gold { border-color: rgba(201,168,76,0.25); }
+    .kpi-card.kpi-gold::before { background: var(--gold); box-shadow: 0 0 12px rgba(201,168,76,0.5); }
+    .kpi-card.kpi-green { border-color: rgba(34,197,94,0.25); }
+    .kpi-card.kpi-green::before { background: var(--green); box-shadow: 0 0 12px rgba(34,197,94,0.5); }
+    .kpi-card.kpi-purple { border-color: rgba(168,85,247,0.25); }
+    .kpi-card.kpi-purple::before { background: var(--purple); box-shadow: 0 0 12px rgba(168,85,247,0.5); }
     .kpi-label {
       font-family: 'DM Mono', monospace;
       font-size: 8px;
@@ -293,10 +310,29 @@
       border-radius: 12px;
       padding: 22px;
       position: relative;
-      transition: border-color 0.2s, transform 0.2s;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
       animation: fadeUp 0.5s ease both;
+      overflow: hidden;
     }
-    .agent-card:hover { border-color: rgba(45,212,191,0.25); transform: translateY(-2px); }
+    .agent-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: 12px 12px 0 0;
+    }
+    .agent-card.card-teal { border-color: rgba(45,212,191,0.2); }
+    .agent-card.card-teal::before { background: var(--teal); box-shadow: 0 0 16px rgba(45,212,191,0.4); }
+    .agent-card.card-teal:hover { border-color: rgba(45,212,191,0.4); box-shadow: 0 4px 24px rgba(45,212,191,0.08); transform: translateY(-2px); }
+    .agent-card.card-gold { border-color: rgba(201,168,76,0.2); }
+    .agent-card.card-gold::before { background: var(--gold); box-shadow: 0 0 16px rgba(201,168,76,0.4); }
+    .agent-card.card-gold:hover { border-color: rgba(201,168,76,0.4); box-shadow: 0 4px 24px rgba(201,168,76,0.08); transform: translateY(-2px); }
+    .agent-card.card-green { border-color: rgba(34,197,94,0.2); }
+    .agent-card.card-green::before { background: var(--green); box-shadow: 0 0 16px rgba(34,197,94,0.4); }
+    .agent-card.card-green:hover { border-color: rgba(34,197,94,0.4); box-shadow: 0 4px 24px rgba(34,197,94,0.08); transform: translateY(-2px); }
+    .agent-card.card-purple { border-color: rgba(168,85,247,0.2); }
+    .agent-card.card-purple::before { background: var(--purple); box-shadow: 0 0 16px rgba(168,85,247,0.4); }
+    .agent-card.card-purple:hover { border-color: rgba(168,85,247,0.4); box-shadow: 0 4px 24px rgba(168,85,247,0.08); transform: translateY(-2px); }
     .agent-card:nth-child(2) { animation-delay: 0.1s; }
     .agent-card:nth-child(3) { animation-delay: 0.2s; }
     .agent-card:nth-child(4) { animation-delay: 0.3s; }
@@ -314,11 +350,11 @@
       margin-bottom: 14px;
     }
     .agent-icon {
-      width: 44px; height: 44px;
-      border-radius: 10px;
+      width: 52px; height: 52px;
+      border-radius: 12px;
       border: 1.5px solid;
       display: flex; align-items: center; justify-content: center;
-      font-size: 18px;
+      font-size: 22px;
       flex-shrink: 0;
     }
     .agent-name {
@@ -392,9 +428,19 @@
     }
     .panel {
       background: var(--navy-card);
-      border: 1px solid var(--navy-border);
+      border: 1px solid rgba(45,212,191,0.15);
       border-radius: 12px;
       padding: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+    .panel::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--teal), transparent);
+      border-radius: 12px 12px 0 0;
     }
 
     /* Activity feed */
@@ -501,10 +547,20 @@
     /* ── QUICK CHAT ── */
     .chat-panel {
       background: var(--navy-card);
-      border: 1px solid var(--navy-border);
+      border: 1px solid rgba(45,212,191,0.2);
       border-radius: 12px;
       padding: 22px;
       margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .chat-panel::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--teal), var(--purple), transparent);
+      border-radius: 12px 12px 0 0;
     }
     .chat-header {
       display: flex;
@@ -722,22 +778,22 @@
 
     <!-- KPI Cards -->
     <div class="kpi-grid">
-      <div class="kpi-card">
+      <div class="kpi-card kpi-teal">
         <div class="kpi-label">Active Recruits</div>
         <div class="kpi-value" style="color:var(--teal)">14</div>
         <div class="kpi-delta">↑ 3 this week</div>
       </div>
-      <div class="kpi-card">
+      <div class="kpi-card kpi-gold">
         <div class="kpi-label">B2B Prospects</div>
         <div class="kpi-value" style="color:var(--gold)">8</div>
         <div class="kpi-delta" style="color:var(--gold)">2 meetings this week</div>
       </div>
-      <div class="kpi-card">
+      <div class="kpi-card kpi-green">
         <div class="kpi-label">Monthly Residual</div>
         <div class="kpi-value" style="color:var(--green)">$2,140</div>
         <div class="kpi-delta">↑ $340 vs last month</div>
       </div>
-      <div class="kpi-card">
+      <div class="kpi-card kpi-purple">
         <div class="kpi-label">AI Tasks Done</div>
         <div class="kpi-value" style="color:var(--purple)">47</div>
         <div class="kpi-delta" style="color:var(--dim)">This month</div>
@@ -750,7 +806,7 @@
       <div class="agents-grid">
 
         <!-- Recruiting Agent -->
-        <div class="agent-card">
+        <div class="agent-card card-teal">
           <div class="agent-status-badge" style="color:var(--green)">● ACTIVE</div>
           <div class="agent-icon-row">
             <div class="agent-icon" style="background:rgba(45,212,191,0.1);border-color:rgba(45,212,191,0.3)">🤖</div>
@@ -771,7 +827,7 @@
         </div>
 
         <!-- Onboarding Agent -->
-        <div class="agent-card">
+        <div class="agent-card card-gold">
           <div class="agent-status-badge" style="color:var(--green)">● ACTIVE</div>
           <div class="agent-icon-row">
             <div class="agent-icon" style="background:rgba(201,168,76,0.1);border-color:rgba(201,168,76,0.3)">🎯</div>
@@ -792,7 +848,7 @@
         </div>
 
         <!-- B2B Sales Agent -->
-        <div class="agent-card">
+        <div class="agent-card card-green">
           <div class="agent-status-badge" style="color:var(--green)">● ACTIVE</div>
           <div class="agent-icon-row">
             <div class="agent-icon" style="background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.3)">💼</div>
@@ -813,7 +869,7 @@
         </div>
 
         <!-- Intelligence Agent -->
-        <div class="agent-card">
+        <div class="agent-card card-purple">
           <div class="agent-status-badge" style="color:var(--green)">● ACTIVE</div>
           <div class="agent-icon-row">
             <div class="agent-icon" style="background:rgba(168,85,247,0.1);border-color:rgba(168,85,247,0.3)">🧠</div>
